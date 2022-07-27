@@ -1,0 +1,19 @@
+---
+## OLD SATELLITE
+satellite_migration_old_force_basic_auth: true
+satellite_migration_old_validate_certs: false
+
+satellite_migration_remove_hosts_from_old_satellite: true
+
+## NEW SATELLITE
+satellite_migration_force_basic_auth: true
+satellite_migration_validate_certs: false
+
+satellite_migration_setup_insights: true
+satellite_migration_setup_remote_execution: true
+satellite_migration_insecure: true
+satellite_migration_token_life_time: 4
+satellite_migration_update_packages: false
+
+satellite_migration_force: false
+satellite_migration_ignore_subman_errors: false

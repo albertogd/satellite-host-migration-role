@@ -1,0 +1,23 @@
+---
+- name: Looking for operatingsystem ID
+  uri:
+    url: "{{ satellite_migration_url }}/api/operatingsystems"
+    user: "{{ satellite_migration_username }}"
+    password: "{{ satellite_migration_password }}"
+    force_basic_auth: "{{ satellite_migration_force_basic_auth }}"
+    validate_certs: "{{ satellite_migration_validate_certs }}"
+    method: "GET"
+    body: "search=title=\"{{ satellite_migration_operatingsystem }}\""
+    status_code: 200
+  register: satellite_migration_operatingsystem_result
+  when: satellite_migration_operatingsystem_id is not defined
+
+- name: Checks if the operatingsystem was found 
+  debug:
+    msg: "This task fails if the operatingsystem was not found."
+  failed_when: satellite_migration_operatingsystem_result.json.results | length == 0
+
+- name: Set operatingsystem ID if exists
+  set_fact:
+    satellite_migration_operatingsystem_id: "{{ satellite_migration_operatingsystem_result.json.results[0].id }}"
+  when: satellite_migration_operatingsystem_result.json.results | length > 0

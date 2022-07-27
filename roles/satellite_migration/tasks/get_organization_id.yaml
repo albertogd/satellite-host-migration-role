@@ -1,0 +1,23 @@
+---
+- name: Looking for Organization ID
+  uri:
+    url: "{{ satellite_migration_url }}/api/organizations"
+    user: "{{ satellite_migration_username }}"
+    password: "{{ satellite_migration_password }}"
+    force_basic_auth: "{{ satellite_migration_force_basic_auth }}"
+    validate_certs: "{{ satellite_migration_validate_certs }}"
+    method: "GET"
+    body: "search=name={{ satellite_migration_organization }}"
+    status_code: 200
+  register: satellite_migration_organization_result
+  when: satellite_migration_organization_id is not defined
+  
+- name: Checks if the organization was found 
+  debug:
+    msg: "This task fails if the organization was not found."
+  failed_when: satellite_migration_organization_result.json.results | length == 0
+
+- name: Set Organization ID if exists
+  set_fact:
+    satellite_migration_organization_id: "{{ satellite_migration_organization_result.json.results[0].id }}"
+  when: satellite_migration_organization_result.json.results | length > 0

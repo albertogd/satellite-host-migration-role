@@ -1,0 +1,6 @@
+- name: Deregister hosts from old Satellite
+  include_tasks: deregister.yaml
+
+- name: Register hosts in new Satellite
+  include_tasks: register.yaml
+

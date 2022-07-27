@@ -1,0 +1,28 @@
+---
+
+- become: true
+  block:
+
+  - name: Unregister hosts From Satellite
+    redhat_subscription:
+      state: "absent"
+
+  - name: Clean subscription-manager
+    shell: /usr/bin/subscription-manager clean
+
+  - name: Uninstall old the Katello RPM
+    yum:
+      name: "katello-ca-consumer-latest"
+      state: absent
+
+- name: Remove host from old Satellite
+  uri:
+    url: "{{ satellite_migration_old_satellite }}/api/v2/hosts/{{ inventory_hostname }}"
+    user: "{{ satellite_migration_old_username }}"
+    password: "{{ satellite_migration_old_password }}"
+    force_basic_auth: "{{ satellite_migration_old_force_basic_auth }}"
+    validate_certs: "{{ satellite_migration_old_validate_certs }}"
+    method: "DELETE"
+    status_code: 200
+  when: satellite_migration_remove_hosts_from_old_satellite
+  ignore_errors: true

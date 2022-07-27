@@ -1,0 +1,7 @@
+satellite_migration_old_satellite: "https://old-satelite"
+satellite_migration_old_username: "user"
+satellite_migration_old_password: "pass"
+
+satellite_migration_url: "https://new-satellite"
+satellite_migration_username: "user"
+satellite_migration_password: "pass"
