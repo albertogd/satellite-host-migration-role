@@ -1,0 +1,14 @@
+---
+
+- name: Get repository list
+  shell: "subscription-manager repos --list-enabled | grep -P '^Repo ID:' |  awk -F : '{print $2 }' | sed 's/ //g'"
+  become: true
+  register: repositories
+
+- name: Backup repositories to tmp
+  lineinfile:
+    path: /tmp/repositories.tmp
+    create: true
+    state: present
+    line: "{{ item }}"
+  loop: "{{ repositories.stdout_lines }}"
