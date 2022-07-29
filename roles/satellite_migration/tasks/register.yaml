@@ -1,9 +1,11 @@
-- name: Get Repositories
-  include_tasks: get_repositories.yaml
-
 - name: Get Registration Command
-  include_tasks: get_registration_command.yaml
+  include_tasks: register/get_registration_command.yaml
   run_once: true
+
+- name: Fail if registration command is undefined
+  fail:
+    msg: 'Registration command is undefined'
+  when: hostvars['localhost']['satellite_registration_command'] is not defined
 
 - name: Execute Satellite registration command
   shell: "export LANG=en && {{ hostvars['localhost']['satellite_registration_command'] }}"

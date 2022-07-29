@@ -4,4 +4,5 @@
   rhsm_repository:
     name: "{{ item }}"
     state: enabled
-  loop: repositories.stdout_lines
+  become: true
+  loop: "{{ repositories.stdout_lines }}"
