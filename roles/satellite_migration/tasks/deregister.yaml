@@ -12,7 +12,7 @@
 
   - name: Uninstall old the Katello RPM
     yum:
-      name: "katello-ca-consumer-latest"
+      name: "katello-ca-consumer*"
       state: absent
 
 - name: Remove host from old Satellite
