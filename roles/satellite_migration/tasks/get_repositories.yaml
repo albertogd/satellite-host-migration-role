@@ -16,12 +16,13 @@
     state: present
     line: "{{ item }}"
   loop: "{{ repositories.stdout_lines }}"
-  when: repoconfig.stat.exists == False
+  when: repoconfig.stat.exists == false
 
 - name: Get subscription release (if set)
   shell: "LC_ALL=C subscription-manager release"
   register: cmd
-  changed_when: False
+  changed_when: false
+  failed_when: false
 
 - name: Write subscription release
   lineinfile:
@@ -29,4 +30,6 @@
     create: true
     state: present
     line: "{{ cmd.stdout }}"
-  when: cmd.stdout != 'Release not set'
+  when: 
+  - cmd.rc == 0
+  - cmd.stdout != 'Release not set'
