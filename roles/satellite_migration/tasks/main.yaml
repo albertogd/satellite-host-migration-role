@@ -1,3 +1,6 @@
+- name: Check connectivity
+  include_tasks: check_connectivity.yaml
+
 - name: Get Repositories
   include_tasks: get_repositories.yaml
   when: satellite_migration_keep_repositories

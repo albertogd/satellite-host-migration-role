@@ -1,0 +1,7 @@
+---
+- name: "Check that we can connect to the new Satellite / Capsule : {{ satellite_migration_url }}"
+  uri:
+    url: "{{ satellite_migration_url }}/"
+    validate_certs: false
+    method: "GET"
+    status_code: 200
