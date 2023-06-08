@@ -11,9 +11,13 @@
     shell: /usr/bin/subscription-manager clean
 
   - name: Uninstall old the Katello RPM
-    yum:
-      name: "katello-ca-consumer-latest"
-      state: absent
+    # Some 'yum' Ansible module versions fail when using a glob.
+    # We are using the shell as a workaround.
+    #yum:
+    #  name: "katello-ca-consumer*"
+    #  state: absent
+    shell: "yum erase -y 'katello-ca-consumer*'"
+    ignore_errors: true
 
 - name: Remove host from old Satellite
   uri:

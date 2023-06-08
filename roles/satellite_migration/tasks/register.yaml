@@ -8,7 +8,7 @@
   when: hostvars['localhost']['satellite_registration_command'] is not defined
 
 - name: Execute Satellite registration command
-  shell: "export LANG=en && {{ hostvars['localhost']['satellite_registration_command'] }}"
+  shell: "export LANG=en && unset http_proxy && unset HTTP_PROXY && unset https_proxy && unset HTTPS_PROXY && {{ hostvars['localhost']['satellite_registration_command'] }}"
   become: true
   register: satellite_registration_execution_result
 

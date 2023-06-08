@@ -1,8 +1,16 @@
 ---
-
 - name: Enable repositories
   rhsm_repository:
     name: "{{ item }}"
     state: enabled
   become: true
   loop: "{{ repositories.stdout_lines }}"
+
+- name: Check if there is a specific release configuration
+  stat:
+    path: "/tmp/subscription-manager-release.tmp"
+  register: releaseverfile
+
+- name: Set subscription-manager release
+  shell: "subscription-manager release --set $(cat /tmp/subscription-manager-release.tmp | awk '{print $NF}')"
+  when: releaseverfile.stat.exists

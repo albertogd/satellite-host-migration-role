@@ -1,9 +1,13 @@
 ---
-
 - name: Get repository list
   shell: "subscription-manager repos --list-enabled | grep -P '^Repo ID:' |  awk -F : '{print $2 }' | sed 's/ //g'"
   become: true
   register: repositories
+
+- name: Check if there is a repository configuration backup
+  stat:
+    path: /tmp/repositories.tmp
+  register: repoconfig
 
 - name: Backup repositories to tmp
   lineinfile:
@@ -12,3 +16,20 @@
     state: present
     line: "{{ item }}"
   loop: "{{ repositories.stdout_lines }}"
+  when: repoconfig.stat.exists == false
+
+- name: Get subscription release (if set)
+  shell: "LC_ALL=C subscription-manager release"
+  register: cmd
+  changed_when: false
+  failed_when: false
+
+- name: Write subscription release
+  lineinfile:
+    path: /tmp/subscription-manager-release.tmp
+    create: true
+    state: present
+    line: "{{ cmd.stdout }}"
+  when: 
+  - cmd.rc == 0
+  - cmd.stdout != 'Release not set'
