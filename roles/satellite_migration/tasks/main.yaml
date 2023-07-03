@@ -1,13 +1,13 @@
 - name: Get Repositories
-  include_tasks: content/get_repositories.yaml
+  include_tasks: repositories/get_repositories.yaml
   when: satellite_migration_keep_repositories
 
 - name: Deregister hosts from old Satellite
-  include_tasks: deregister.yaml
+  include_tasks: register/deregister.yaml
 
 - name: Register hosts in new Satellite
-  include_tasks: register.yaml
+  include_tasks: register/register.yaml
 
 - name: Enable Repositories
-  include_tasks: content/set_repositories.yaml
+  include_tasks: repositories/set_repositories.yaml
   when: satellite_migration_keep_repositories

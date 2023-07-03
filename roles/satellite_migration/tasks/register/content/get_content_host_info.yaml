@@ -1,0 +1,20 @@
+---
+- name: Get Content Host info from Old Satellite
+  uri:
+    url: "{{ satellite_migration_old_satellite }}/api/v2/hosts/{{ ansible_fqdn }}"
+    user: "{{ satellite_migration_old_username }}"
+    password: "{{ satellite_migration_old_password }}"
+    force_basic_auth: "{{ satellite_migration_force_basic_auth }}"
+    validate_certs: "{{ satellite_migration_validate_certs }}"
+    method: "GET"
+    status_code: 200
+  register: satellite_migration_content_host_info.json
+
+- name: Set Facts from Old Satellite
+  set_fact:
+    satellite_migration_organization: "{{ satellite_migration_content_host_info.organization_name }}"
+    satellite_migration_location: "{{ satellite_migration_content_host_info.location_name }}"
+    satellite_migration_ak: "{{ satellite_migration_content_host_info.activation_keys[0].name }}"
+    satellite_migration_hostgroup: "{{ satellite_migration_content_host_info.hostgroup_name }}"
+    satellite_migration_lifecycle_environment: "{{ satellite_migration_content_host_info.lifecycle_environment_name }}"
+    satellite_migration_operatingsystem: "{{ satellite_migration_content_host_info.operatingsystem_name }}"

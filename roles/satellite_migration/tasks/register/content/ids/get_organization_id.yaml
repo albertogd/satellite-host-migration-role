@@ -1,8 +1,4 @@
 ---
-- name: Get Location from Old Satellite
-  set_fact:
-    satellite_migration_organization: "{{ satellite_migration_content_host_info.organization_name }}"
-    
 - name: Looking for Organization ID in New Satellite
   uri:
     url: "{{ satellite_migration_url }}/api/organizations"

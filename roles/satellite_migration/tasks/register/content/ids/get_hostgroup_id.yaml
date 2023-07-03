@@ -1,8 +1,4 @@
 ---
-- name: Get Hostgroup from Old Satellite
-  set_fact:
-    satellite_migration_hostgroup: "{{ satellite_migration_content_host_info.hostgroup_name }}"
-    
 - name: Looking for Hostgroup ID in New Satellite
   uri:
     url: "{{ satellite_migration_url }}/api/hostgroups"

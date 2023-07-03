@@ -1,8 +1,4 @@
 ---
-- name: Get Lifecycle Environment from Old Satellite
-  set_fact:
-    satellite_migration_lifecycle_environment: "{{ satellite_migration_content_host_info.lifecycle_environment_name }}"
-    
 - name: Looking for Lifecycle Environment ID in New Satellite
   uri:
     url: "{{ satellite_migration_url }}/katello/api/environments"
