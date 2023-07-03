@@ -63,7 +63,7 @@
         update_packages: "{{ satellite_migration_update_packages }}"
         repo: "{{ satellite_migration_repo | default(omit) }}"
         repo_gpg_key_url: "{{ satellite_migration_repo_gpg_key_url | default(omit) }}"
-        activation_keys: "{{ satellite_migration_activation_keys | default(omit) }}"
+        activation_keys: "{{ satellite_migration_ak_id | default(omit) }}"
         lifecycle_environment_id: "{{ satellite_migration_lifecycle_environment_id | default(omit) }}"
         force: "{{ satellite_migration_force }}"
         ignore_subman_errors: "{{ satellite_migration_ignore_subman_errors }}"

@@ -7,7 +7,7 @@
 
 - name: Backup repositories to tmp
   lineinfile:
-    path: /tmp/repositories.tmp
+    path: "{{ satellite_migration_local_tmp_path }}/repositories.tmp"
     create: true
     state: present
     line: "{{ item }}"

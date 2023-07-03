@@ -6,6 +6,7 @@ satellite_migration_old_validate_certs: false
 ## MIGRATION
 satellite_migration_remove_hosts_from_old_satellite: true
 satellite_migration_keep_repositories: true
+satellite_migration_local_tmp_path: /tmp/satellite-migration
 
 ## NEW SATELLITE
 satellite_migration_force_basic_auth: true

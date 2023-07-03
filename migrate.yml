@@ -5,9 +5,3 @@
 
   roles:
     - role: satellite_migration
-      vars:
-        satellite_migration_organization: "Org"
-        satellite_migration_location: "Location"
-        satellite_migration_hostgroup: "Hostgroup"
-        satellite_migration_activation_keys:
-          - AK
