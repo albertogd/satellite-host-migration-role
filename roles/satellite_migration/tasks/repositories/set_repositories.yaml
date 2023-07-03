@@ -1,8 +1,9 @@
 ---
 
 - name: Enable repositories
-  rhsm_repository:
+  community.general.rhsm_repository:
     name: "{{ item }}"
     state: enabled
   become: true
   loop: "{{ repositories.stdout_lines }}"
+  ignore_errors: true

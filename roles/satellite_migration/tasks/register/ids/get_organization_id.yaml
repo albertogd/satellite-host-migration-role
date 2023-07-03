@@ -1,5 +1,5 @@
 ---
-- name: Looking for Organization ID
+- name: Looking for Organization ID in New Satellite
   uri:
     url: "{{ satellite_migration_url }}/api/organizations"
     user: "{{ satellite_migration_username }}"
@@ -7,7 +7,7 @@
     force_basic_auth: "{{ satellite_migration_force_basic_auth }}"
     validate_certs: "{{ satellite_migration_validate_certs }}"
     method: "GET"
-    body: "search=name={{ satellite_migration_organization }}"
+    body: "search=name=\"{{ satellite_migration_organization }}\""
     status_code: 200
   register: satellite_migration_organization_result
   when: satellite_migration_organization_id is not defined

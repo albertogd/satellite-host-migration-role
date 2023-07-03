@@ -1,13 +1,26 @@
+- name: Get Content Host info
+  include_tasks: 
+    file: get_content_host_info.yaml
+  tags: always
+
 - name: Get Repositories
-  include_tasks: get_repositories.yaml
+  include_tasks: 
+    file: repositories/get_repositories.yaml
   when: satellite_migration_keep_repositories
 
-- name: Deregister hosts from old Satellite
-  include_tasks: deregister.yaml
+- name: Host migration
+  when: not satellite_migration_dry_run
+  block:
 
-- name: Register hosts in new Satellite
-  include_tasks: register.yaml
+    - name: Deregister hosts from old Satellite
+      include_tasks: 
+        file: register/deregister.yaml
 
-- name: Enable Repositories
-  include_tasks: set_repositories.yaml
-  when: satellite_migration_keep_repositories
+    - name: Register hosts in new Satellite
+      include_tasks: 
+        file: register/register.yaml
+
+    - name: Enable Repositories
+      include_tasks: 
+        file: repositories/set_repositories.yaml
+      when: satellite_migration_keep_repositories

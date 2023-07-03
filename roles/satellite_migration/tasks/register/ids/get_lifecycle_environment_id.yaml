@@ -1,5 +1,5 @@
 ---
-- name: Looking for Lifecycle Environment ID
+- name: Looking for Lifecycle Environment ID in New Satellite
   uri:
     url: "{{ satellite_migration_url }}/katello/api/environments"
     user: "{{ satellite_migration_username }}"

@@ -1,0 +1,26 @@
+- name: Install New Satellite CA
+  yum:
+    name: "{{ satellite_migration_url }}/pub/katello-ca-consumer-latest.noarch.rpm"
+    state: present
+    validate_certs: false
+  become: true
+
+- name: Get Registration Command
+  include_tasks: get_registration_command.yaml
+  run_once: true
+
+- name: Fail if registration command is undefined
+  fail:
+    msg: 'Registration command is undefined'
+  when: satellite_registration_command is not defined
+
+- name: Execute Satellite registration command
+  shell: "export LANG=en && {{ satellite_registration_command }}"
+  become: true
+  register: satellite_registration_execution_result
+  ignore_errors: true
+
+- name: Show output
+  debug:
+    var: satellite_registration_execution_result
+

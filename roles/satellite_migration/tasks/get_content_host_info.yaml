@@ -1,0 +1,42 @@
+---
+- name: Get Content Host info from Old Satellite
+  uri:
+    url: "{{ satellite_migration_old_satellite }}/api/hosts/{{ inventory_hostname }}"
+    user: "{{ satellite_migration_old_username }}"
+    password: "{{ satellite_migration_old_password }}"
+    force_basic_auth: "{{ satellite_migration_force_basic_auth }}"
+    validate_certs: "{{ satellite_migration_validate_certs }}"
+    method: "GET"
+    status_code: 200
+  register: satellite_migration_content_host_info
+  until: satellite_migration_content_host_info is not failed
+  retries: 3
+  delay: 5
+  changed_when: false
+
+- name: Get Host parameters list
+  set_fact:
+    satellite_migration_host_parameters: "{{ satellite_migration_content_host_info.json.all_parameters }}"
+
+- name: Get Activation Key list
+  set_fact:
+    satellite_migration_ak_list: "{{ dict(satellite_migration_host_parameters|map(attribute='name')|zip(satellite_migration_host_parameters)) }}"
+
+- name: Set Facts from Old Satellite
+  set_fact:
+    satellite_migration_organization: "{{ satellite_migration_content_host_info.json.organization_name }}"
+    satellite_migration_location: "{{ satellite_migration_content_host_info.json.location_name }}"
+    satellite_migration_hostgroup: "{{ satellite_migration_content_host_info.json.hostgroup_name }}"
+    satellite_migration_ak: "{{ satellite_migration_ak_list['kt_activation_keys'].value }}"
+    satellite_migration_lifecycle_environment: "{{ satellite_migration_content_host_info.json.content_facet_attributes.lifecycle_environment_name }}"
+    satellite_migration_operatingsystem: "{{ satellite_migration_content_host_info.json.operatingsystem_name }}"
+
+- name: Create backup folder
+  file:
+    path: "{{ satellite_migration_local_tmp_path }}"
+    state: directory
+
+- name: Backup content facts to tmp
+  template:
+    src: content.j2
+    dest: "{{ satellite_migration_local_tmp_path }}/content.tmp"
