@@ -19,9 +19,6 @@
       - satellite_migration_ignore_subman_errors is defined
     fail_msg: "Mandatory variables not defined"
 
-- name: Get Content Host
-  include_tasks: ids/get_content_host_info.yaml
-
 - name: Get Organization ID
   include_tasks: ids/get_organization_id.yaml
   when: satellite_migration_organization_id is not defined and satellite_migration_organization is defined
@@ -42,9 +39,9 @@
   include_tasks: ids/get_operatingsystem_id.yaml
   when: satellite_migration_operatingsystem_id is not defined and satellite_migration_operatingsystem is defined
 
-- name: Get Activation Key 
-  include_tasks: ids/get_activation_key.yaml
-  when: satellite_migration_ak_id is not defined and satellite_migration_ak is defined
+#- name: Get Activation Key 
+#include_tasks: ids/get_activation_key.yaml
+#when: satellite_migration_ak_id is not defined and satellite_migration_ak is defined
 
 
 - name: Get registration command from Satellite
@@ -71,24 +68,18 @@
         update_packages: "{{ satellite_migration_update_packages }}"
         repo: "{{ satellite_migration_repo | default(omit) }}"
         repo_gpg_key_url: "{{ satellite_migration_repo_gpg_key_url | default(omit) }}"
-        activation_keys: "{{ satellite_migration_ak_id | default(omit) }}"
+        activation_keys:
+          - "{{ satellite_migration_ak | default(omit) }}"
         lifecycle_environment_id: "{{ satellite_migration_lifecycle_environment_id | default(omit) }}"
         force: "{{ satellite_migration_force }}"
         ignore_subman_errors: "{{ satellite_migration_ignore_subman_errors }}"
     status_code: 200
   register: satellite_migration_result
 
+- name: Set registration command
+  set_fact:
+    satellite_registration_command: "{{ satellite_migration_result.json.registration_command }}"
 
-# Register command var in localhost hostvar
-- block:
-
-  - name: Set registration command
-    set_fact:
-      satellite_registration_command: "{{ satellite_migration_result.json.registration_command }}"
-
-  - name: Registration Command
-    debug:
-      msg: "{{ hostvars['localhost'].satellite_registration_command }}"
-
-  delegate_to: localhost
-  delegate_facts: true
+- name: Registration Command
+  debug:
+    msg: satellite_registration_command 

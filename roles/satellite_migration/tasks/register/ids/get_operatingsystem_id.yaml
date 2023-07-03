@@ -1,8 +1,4 @@
 ---
-- name: Get Location from Old Satellite
-  set_fact:
-    satellite_migration_operatingsystem: "{{ satellite_migration_content_host_info.operatingsystem_name }}"
-    
 - name: Looking for operatingsystem ID
   uri:
     url: "{{ satellite_migration_url }}/api/operatingsystems"

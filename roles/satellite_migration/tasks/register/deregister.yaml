@@ -4,7 +4,7 @@
   block:
 
   - name: Unregister hosts From Satellite
-    redhat_subscription:
+    community.general.redhat_subscription:
       state: "absent"
 
   - name: Clean subscription-manager
@@ -12,7 +12,7 @@
 
   - name: Uninstall old the Katello RPM
     yum:
-      name: "katello-ca-consumer-latest"
+      name: "katello-ca-consumer*"
       state: absent
 
 - name: Remove host from old Satellite

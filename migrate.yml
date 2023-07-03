@@ -1,7 +1,6 @@
 ---
 - name: Migrate hosts from one Satellite to another
   hosts: all
-  gather_facts: false
 
   roles:
     - role: satellite_migration
