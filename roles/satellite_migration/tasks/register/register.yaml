@@ -1,5 +1,5 @@
 - name: Get Registration Command
-  include_tasks: register/get_registration_command.yaml
+  include_tasks: get_registration_command.yaml
   run_once: true
 
 - name: Fail if registration command is undefined

@@ -20,30 +20,30 @@
     fail_msg: "Mandatory variables not defined"
 
 - name: Get Content Host
-  include_tasks: get_content_host_info.yaml
+  include_tasks: ids/get_content_host_info.yaml
 
 - name: Get Organization ID
-  include_tasks: get_organization_id.yaml
+  include_tasks: ids/get_organization_id.yaml
   when: satellite_migration_organization_id is not defined and satellite_migration_organization is defined
 
 - name: Get Location ID
-  include_tasks: get_location_id.yaml
+  include_tasks: ids/get_location_id.yaml
   when: satellite_migration_location_id is not defined and satellite_migration_location is defined
 
 - name: Get Lifecycle Environment ID
-  include_tasks: get_lifecycle_environment_id.yaml
+  include_tasks: ids/get_lifecycle_environment_id.yaml
   when: satellite_migration_lifecycle_environment_id is not defined and satellite_migration_lifecycle_environment is defined
 
 - name: Get Hostgroup ID
-  include_tasks: get_hostgroup_id.yaml
+  include_tasks: ids/get_hostgroup_id.yaml
   when: satellite_migration_hostgroup_id is not defined and satellite_migration_hostgroup is defined
 
 - name: Get operatingsystem ID
-  include_tasks: get_operatingsystem_id.yaml
+  include_tasks: ids/get_operatingsystem_id.yaml
   when: satellite_migration_operatingsystem_id is not defined and satellite_migration_operatingsystem is defined
 
 - name: Get Activation Key 
-  include_tasks: get_activation_key.yaml
+  include_tasks: ids/get_activation_key.yaml
   when: satellite_migration_ak_id is not defined and satellite_migration_ak is defined
 
 
