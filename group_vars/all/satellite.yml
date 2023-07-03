@@ -1,7 +1,7 @@
-satellite_migration_old_satellite: ""
+satellite_migration_old_satellite: "https://old-satelite-url"
 satellite_migration_old_username: ""
 satellite_migration_old_password: ""
 
-satellite_migration_url: ""
+satellite_migration_url: "https://new-satelite-url"
 satellite_migration_username: ""
 satellite_migration_password: ""
