@@ -1,0 +1,23 @@
+---
+- name: Get Host parameters
+  set_fact:
+    satellite_migration_host_all_parameters: "{{ satellite_migration_content_host_info.json.all_parameters }}"
+    satellite_migration_host_facets: "{{ satellite_migration_content_host_info.json.subscription_facet_attributes }}"
+
+- name: Format Host parameters list
+  set_fact:
+    satellite_migration_host_parameters: "{{ dict(satellite_migration_host_all_parameters|map(attribute='name')|zip(satellite_migration_host_all_parameters)) }}"
+
+- name: Get Activation Key from Host parameters
+  set_fact:
+    satellite_migration_ak: "{{ satellite_migration_host_parameters['kt_activation_keys'].value if ( satellite_migration_host_parameters|selectattr('kt_activation_keys','defined')|list|length > 0) }}"
+
+- name: Get Activation Key from Subscription facets
+  set_fact:
+    satellite_migration_ak: "{{ satellite_migration_host_facets.activation_keys[0].name if 'activation_keys' in satellite_migration_host_facets|list }}"
+  when: satellite_migration_ak | length == 0
+
+- name: Checks if the Activation Key was found
+  debug:
+    msg: "This task fails if the Activation Key was not found."
+  failed_when: satellite_migration_ak | length == 0 

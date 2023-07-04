@@ -1,0 +1,13 @@
+- name: Get Activation Key from Host parameters
+  set_fact:
+    satellite_migration_ak: "{{ satellite_migration_host_parameters['kt_activation_keys'].value if ( satellite_migration_host_parameters|selectattr('kt_activation_keys','defined')|list|length > 0) }}"
+
+- name: Get Activation Key from Subscription facets
+  set_fact:
+    satellite_migration_ak: "{{ satellite_migration_host_facets.activation_keys[0].name if satellite_migration_host_facets|selectattr('activation_keys','defined')|list|length > 0 }}"
+  when: satellite_migration_ak | length == 0
+
+- name: Checks if the Activation Key was found
+  debug:
+    msg: "This task fails if the Activation Key was not found."
+  failed_when: satellite_migration_ak | length == 0 

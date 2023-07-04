@@ -44,6 +44,10 @@ wget https://galaxy.ansible.com/download/community-general-7.1.0.tar.gz
 
 Copy the tar file to your disconnected environment, and extract the collection in the path `$HOME/.ansible/collections/ansible_collections/`.
 
+## Tests
+
+This role has been tested migrating RHEL 6, 7 and 8 hosts
+
 ## Ansible role for Satellite Registration Command
 
 This role is based on the "Ansible role for Satellite Registration Command": https://github.com/andrewlinuxadmin/ansible-role-satellite-registration-command

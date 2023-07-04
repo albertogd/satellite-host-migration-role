@@ -1,0 +1,39 @@
+---
+- name: Check variables
+  assert:
+    that:
+      - satellite_migration_url is defined
+      - satellite_migration_username is defined
+      - satellite_migration_password is defined
+      - satellite_migration_force_basic_auth is defined
+      - satellite_migration_validate_certs is defined
+      - (satellite_migration_organization_id is defined or satellite_migration_organization is defined)
+      - satellite_migration_location_id is defined or satellite_migration_location is defined
+      - satellite_migration_setup_insights is defined
+      - satellite_migration_setup_remote_execution is defined
+      - satellite_migration_insecure is defined
+      - satellite_migration_token_life_time is defined
+      - satellite_migration_update_packages is defined
+      - satellite_migration_force is defined
+      - satellite_migration_ignore_subman_errors is defined
+    fail_msg: "Mandatory variables not defined"
+
+- name: Get Organization ID
+  include_tasks: ids/get_organization_id.yaml
+  when: satellite_migration_organization_id is not defined and satellite_migration_organization is defined
+
+- name: Get Location ID
+  include_tasks: ids/get_location_id.yaml
+  when: satellite_migration_location_id is not defined and satellite_migration_location is defined
+
+- name: Get Lifecycle Environment ID
+  include_tasks: ids/get_lifecycle_environment_id.yaml
+  when: satellite_migration_lifecycle_environment_id is not defined and satellite_migration_lifecycle_environment is defined
+
+- name: Get Hostgroup ID
+  include_tasks: ids/get_hostgroup_id.yaml
+  when: satellite_migration_hostgroup_id is not defined and satellite_migration_hostgroup is defined
+
+- name: Get operatingsystem ID
+  include_tasks: ids/get_operatingsystem_id.yaml
+  when: satellite_migration_operatingsystem_id is not defined and satellite_migration_operatingsystem is defined
