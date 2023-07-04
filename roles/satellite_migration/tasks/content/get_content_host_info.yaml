@@ -14,22 +14,26 @@
   delay: 5
   changed_when: false
 
-- name: Get Host parameters list
-  set_fact:
-    satellite_migration_host_parameters: "{{ satellite_migration_content_host_info.json.all_parameters }}"
-
-- name: Get Activation Key list
-  set_fact:
-    satellite_migration_ak_list: "{{ dict(satellite_migration_host_parameters|map(attribute='name')|zip(satellite_migration_host_parameters)) }}"
-
 - name: Set Facts from Old Satellite
   set_fact:
     satellite_migration_organization: "{{ satellite_migration_content_host_info.json.organization_name }}"
     satellite_migration_location: "{{ satellite_migration_content_host_info.json.location_name }}"
-    satellite_migration_hostgroup: "{{ satellite_migration_content_host_info.json.hostgroup_name }}"
-    satellite_migration_ak: "{{ satellite_migration_ak_list['kt_activation_keys'].value }}"
+    satellite_migration_hostgroup: "{{ satellite_migration_content_host_info.json.hostgroup_name | default('') }}"
     satellite_migration_lifecycle_environment: "{{ satellite_migration_content_host_info.json.content_facet_attributes.lifecycle_environment_name }}"
-    satellite_migration_operatingsystem: "{{ satellite_migration_content_host_info.json.operatingsystem_name }}"
+    satellite_migration_operatingsystem: "{{ satellite_migration_content_host_info.json.operatingsystem_name | default('') }}"
+
+- name: Get Activation Key
+  include_tasks: get_activation_key.yaml
+
+- name: Print Host parameters
+  debug:
+    msg:
+      Organization: "{{ satellite_migration_organization }}"
+      Location: "{{ satellite_migration_location }}"
+      Hostgroup: "{{ satellite_migration_hostgroup }}"
+      Lifecycle Environment: "{{ satellite_migration_lifecycle_environment }}"
+      Operating System: "{{ satellite_migration_operatingsystem }}"
+      Activation Key: "{{ satellite_migration_ak }}"
 
 - name: Create backup folder
   file:

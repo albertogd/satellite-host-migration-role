@@ -12,11 +12,6 @@
   register: satellite_migration_hostgroup_result
   when: satellite_migration_hostgroup_id is not defined
   
-- name: Checks if the hostgroup was found 
-  debug:
-    msg: "This task fails if the hostgroup was not found."
-  failed_when: satellite_migration_hostgroup_result.json.results | length == 0
-
 - name: Set Hostgroup ID if exists
   set_fact:
     satellite_migration_hostgroup_id: "{{ satellite_migration_hostgroup_result.json.results[0].id }}"

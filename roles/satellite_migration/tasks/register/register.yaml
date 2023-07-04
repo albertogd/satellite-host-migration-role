@@ -1,8 +1,22 @@
+- name: Download katello-rhsm-consumer from New Satellite
+  get_url:
+    url: "{{ satellite_migration_url }}/pub/katello-rhsm-consumer"
+    dest: "{{ satellite_migration_local_tmp_path }}/katello-rhsm-consumer"
+    mode: 'u+rwx'
+    validate_certs: false
+  register: download
+
+- name: Install katello-rhsm-consumer
+  shell: "{{ satellite_migration_local_tmp_path }}/katello-rhsm-consumer"
+  become: true
+  when: download.changed
+
 - name: Install New Satellite CA
   yum:
     name: "{{ satellite_migration_url }}/pub/katello-ca-consumer-latest.noarch.rpm"
     state: present
     validate_certs: false
+    disable_gpg_check: true
   become: true
 
 - name: Get Registration Command
